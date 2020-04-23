@@ -46,3 +46,5 @@ Calculates the location of a bot and landmarks after a series of movements and m
 - blue dots - SLAM calculated bot positions
 
 - purple dots- SLAM calculated landmark positions
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/onlineSLAM.gif)
