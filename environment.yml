@@ -1,0 +1,7 @@
+name: python_projects
+dependencies:
+- python==2.7
+- matplotlib
+- numpy==1.15
+- glob
+- imageio
