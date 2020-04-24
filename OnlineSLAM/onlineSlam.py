@@ -51,7 +51,7 @@ first = True
 trail = list()
 beliefL = list()
 plots = list()
-number = 1
+fileNum = 1
 NOISE_MOVE = 0.01
 
 # Execute SLAM and plot.
@@ -73,22 +73,21 @@ for move in moves:
         trailX, trailY = zip(*trail)
         foundX, foundY = zip(*found)
         locX, locY = zip(*locEst)
-    
-        fig = plt.figure()
-        plt.xlim([-1,state.cols])
-        plt.ylim([-state.rows,1])
-        plt.plot(trailX, trailY, '--')
-        
+
         beliefX = np.asarray(beliefX) + state._start_position['x']
         beliefY = np.asarray(beliefY) + state._start_position['y']
         locX = np.asarray(locX) + state._start_position['x']
         locY = np.asarray(locY) + state._start_position['y']
         
+        # Plot.
+        plt.xlim([-1,state.cols])
+        plt.ylim([-state.rows,1])
+        plt.plot(trailX, trailY, '--')
         plt.scatter(beliefX, beliefY, c='b')
         plt.scatter(locX, locY, c='m')
         plt.plot(state.bot.x, state.bot.y, c='r', marker=(3,0,degrees(state.bot.bearing)-90), markersize=15)
-        plt.savefig('gifFolder/plot_%02d.png' % number)
-        number += 1
+        plt.savefig('gifFolder/plot_%02d.png' % fileNum)
+        fileNum += 1
         plt.close()
         first = False
 
@@ -106,14 +105,15 @@ for move in moves:
     locX = np.asarray(locX) + state._start_position['x']
     locY = np.asarray(locY) + state._start_position['y']
     
+    # Plot.
     plt.xlim([-1,state.cols])
     plt.ylim([-state.rows,1])
     plt.plot(trailX, trailY, '--')
     plt.scatter(beliefX, beliefY, c='b')
     plt.scatter(locX, locY, c='m')
     plt.plot(state.bot.x, state.bot.y, c='r', marker=(3,0,degrees(state.bot.bearing)-90), markersize=15)
-    plt.savefig('gifFolder/plot_%02d.png' % number)
-    number += 1
+    plt.savefig('gifFolder/plot_%02d.png' % fileNum)
+    fileNum += 1
     plt.close()
     
     rover_slam.process_movement(float(action[1]), float(action[2]), NOISE_MOVE)
@@ -123,4 +123,6 @@ plotList = []
 plots = glob.glob('gifFolder/*.png')
 for plot in plots:
     plotList.append(imageio.imread(plot))
+for i in range(5):
+    plotList.append(imageio.imread(plots[len(plots)-1]))
 imageio.mimsave('onlineSLAM.gif', plotList, fps=2)

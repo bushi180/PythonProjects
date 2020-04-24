@@ -18,7 +18,7 @@ NOISE_MOVE = 0.01
 HASH_SEED = 'some_seed'
 
 def truncate_angle(t):
-    return ((t+pi) % (2*pi)) - pi
+    return ((t + pi) % (2 * pi)) - pi
 
 def compute_bearing(p, q):
     x1, y1 = p
@@ -108,7 +108,6 @@ class Slam:
         self.size = 2
         self.omega = np.zeros((self.size, self.size))
         self.xI = np.zeros((self.size, 1))
-        
         self.foundLandmarks = {}
         self.landmarkIndex = 0
         self.heading = 0.0
