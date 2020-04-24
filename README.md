@@ -5,7 +5,7 @@
    * [How to use](#how-to-use)
    * [Projects](#projects)
       * [Online SLAM](#online-slam)
-	  * [A-Star (A*)](#a-star)
+	  * [A-Star](#a-star)
 	  
 # Requirements
 
@@ -51,7 +51,7 @@ Calculates the location of a bot and landmarks after a series of movements and m
 
 ![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/onlineSLAM.gif)
 
-## A-Star (A*)
+## A-Star
 
 Calculates the shortest path found between two nodes. Uses an Euchildean distance heuristic.
 
