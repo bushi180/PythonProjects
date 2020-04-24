@@ -5,7 +5,7 @@
    * [How to use](#how-to-use)
    * [Projects](#projects)
       * [Online SLAM](#online-slam)
-	  * [A-Star](#a-star)
+	  * [A-Star (A*)](#a-star)
 	  
 # Requirements
 
@@ -38,6 +38,7 @@
 ## Online SLAM
 
 Online Simultaneous Localization and Mapping (SLAM)
+
 Calculates the location of a bot and landmarks after a series of movements and measurements to landmarks.
 
 - red triangle - actual bot position and direction
