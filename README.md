@@ -5,6 +5,7 @@
    * [How to use](#how-to-use)
    * [Projects](#projects)
       * [Online SLAM](#online-slam)
+	  * [A-Star](#a-star)
 	  
 # Requirements
 
@@ -47,4 +48,20 @@ Calculates the location of a bot and landmarks after a series of movements and m
 
 - purple dots- SLAM calculated landmark positions
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/onlineSLAM.gif)
+![2](https://github.com/bushi180/PythonProjects/blob/master/OnlineSLAM/onlineSLAM.gif)
+
+## A-Star (A*)
+
+Calculates the shortest path found between two nodes. Uses an Euchildean distance heuristic.
+
+- green circle - start position
+
+- magenta star - goal postion
+
+- black squares - walls
+
+- blue X's - searched nodes
+
+- red line - shortest path found
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/AStar/aStar.gif)
