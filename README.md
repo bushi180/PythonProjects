@@ -6,6 +6,7 @@
    * [Projects](#projects)
       * [Online SLAM](#online-slam)
 	  * [A-Star](#a-star)
+	  * [Kalman Filter](#kalman-filter)
 	  
 # Requirements
 
@@ -18,6 +19,10 @@
 - glob
 
 - imageio
+
+- imutils
+
+- opencv
 
 # How to use
 
@@ -66,3 +71,11 @@ Calculates the shortest path found between two nodes. Uses an Euchildean distanc
 - red line - shortest path found
 
 ![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/aStar.gif)
+
+## Kalman Filter
+
+Calculates the position of people in frame. Uses OpenCV Histogram of Gradients (HoG) descriptors as measurements to update the filter.
+
+- green rectangle - bounding box created from kalman filter state after prediction and measurement update.
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/kalmanFilter.gif)
