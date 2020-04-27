@@ -13,94 +13,20 @@ from math import atan2
 import random
 import hashlib
 
-NOISE_FLAG = True
-NOISE_MOVE = 0.01
-HASH_SEED = 'some_seed'
+noiseFlag = True
+moveNoise = 0.01
+hashSeed = 'some_seed'
 
-def truncate_angle(t):
-    return ((t + pi) % (2 * pi)) - pi
+def correctAngle(t):
+    correction = ((t + pi) % (2 * pi)) - pi
+    return correction
 
-def compute_bearing(p, q):
+def calculateBearing(p, q):
     x1, y1 = p
     x2, y2 = q
     dx = x2 - x1
     dy = y2 - y1
     return atan2(dy, dx)
-
-class State:
-    def __init__(self, area_map, max_distance=1.0, max_steering=pi/2.+0.01, horizon_distance=3):
-        self.reached_locations = list()
-        self.max_distance = max_distance
-        self.max_steering = max_steering
-        self.horizon_distance = horizon_distance
-        self.found = list()
-        self.rows = len(area_map)
-        self.cols = len(area_map[0])
-        self.landmarks = list()
-        self._start_position = dict()
-        
-        # Now process the interior of the provided map
-        for i in range(self.rows):
-            for j in range(self.cols):
-                this_square = area_map[i][j]
-                x, y = float(j), -float(i)
-
-                # Process landmarks
-                if this_square == 'L':
-                    landmark = dict()
-                    landmark['x'] = x
-                    landmark['y'] = y
-
-                    self.landmarks.append(landmark)
-
-                # Process start
-                if this_square == '@':
-                    self._start_position['x'] = x + 0.5
-                    self._start_position['y'] = y - 0.5
-
-        # initialize the bot at the start position and at a bearing pointing due east
-        self.bot = Bot(x=self._start_position['x'], y=self._start_position['y'], bearing=0.0,
-                                 max_distance=self.max_distance, max_steering=self.max_steering)
-
-    def generate_measurements(self, noise=NOISE_FLAG):
-        measurements = dict()
-
-        # process landmarks
-        for location in self.landmarks:
-            distance, bearing = self.bot.measure_distance_and_bearing_to((location['x'], location['y']), noise=noise)
-
-            if distance <= self.horizon_distance:
-                if (location['x'], location['y']) not in self.found:
-                    self.found.append((location['x'], location['y']))
-                measurements[int(hashlib.md5(str(location) + HASH_SEED).hexdigest(), 16)] = {'distance': distance,
-                                                                                             'bearing': bearing,
-                                                                                             'type': 'beacon'}
-        return measurements,self.found
-
-    def update_according_to(self, action, noise=NOISE_FLAG):
-        action = action.split()
-        action_type = action[0]
-
-        if action_type == 'move':
-            steering, distance = action[1:]
-            self._attempt_move(float(steering), float(distance), noise=noise)
-        else:
-            raise Exception('improperly formatted action: {}'.format(''.join(action)))
-            
-    def _attempt_move(self, steering, distance, noise=NOISE_FLAG):
-        try:
-            distance_ok = 0.0 <= distance <= self.max_distance
-            steering_ok = (-self.max_steering) <= steering <= self.max_steering
-
-            if noise:
-                steering += random.uniform(-NOISE_MOVE, NOISE_MOVE)
-                distance *= random.uniform(1.0 - NOISE_MOVE, 1.0 + NOISE_MOVE)
-
-            if distance_ok and steering_ok:
-                self.bot.move(steering, distance)
-
-        except ValueError:
-            raise Exception('improperly formatted move command : {} {}'.format(steering, distance))
 
 class Slam:
     def __init__(self):
@@ -116,7 +42,7 @@ class Slam:
         self.omega[0, 0] = self.omega[1, 1] = 1.0
         self.xI[0, 0] = self.xI[1, 0] = self.initial_pos
 
-    def process_measurements(self, measurements): 
+    def processMeasurements(self, measurements): 
         # Update for new landmarks
         expandNum = 0
         for key in measurements:
@@ -137,8 +63,8 @@ class Slam:
             self.xI = np.append(self.xI, row2, axis=0)
 
         # Update values
-        measurement_noise = 1.0
-        measureUpPos, measureUpNeg = 1.0 / measurement_noise, -1.0 / measurement_noise
+        measurementNoise = 1.0
+        measureUpPos, measureUpNeg = 1.0 / measurementNoise, -1.0 / measurementNoise
     
         # Measurement Update
         rIndex = 0
@@ -157,15 +83,15 @@ class Slam:
             
             # Find landmark coordinates
             landDistance = measurements[key]['distance']
-            landBearing = truncate_angle(self.heading + measurements[key]['bearing'])
+            landBearing = correctAngle(self.heading + measurements[key]['bearing'])
             dx = landDistance * cos(landBearing)
             dy = landDistance * sin(landBearing)
 
             # Update xI
-            self.xI[rIndex, 0] += -dx / measurement_noise
-            self.xI[rIndex+1, 0] += -dy / measurement_noise
-            self.xI[lIndex, 0] += dx / measurement_noise
-            self.xI[lIndex+1, 0] += dy / measurement_noise
+            self.xI[rIndex, 0] += -dx / measurementNoise
+            self.xI[rIndex+1, 0] += -dy / measurementNoise
+            self.xI[lIndex, 0] += dx / measurementNoise
+            self.xI[lIndex+1, 0] += dy / measurementNoise
         
         # Find estimate bot x, y before movement
         mu = np.dot(np.linalg.inv(self.omega), self.xI)
@@ -173,9 +99,9 @@ class Slam:
 
         return (x, y), mu
     
-    def process_movement(self, steering, distance, motion_noise):
+    def processMovement(self, steering, distance, motionNoise):
         # Update values
-        motionUpPos, motionUpNeg = 1.0 / motion_noise, -1.0 / motion_noise
+        motionUpPos, motionUpNeg = 1.0 / motionNoise, -1.0 / motionNoise
         
         # Expand
         self.omega = np.insert(self.omega, 2, 0, axis=1)
@@ -198,15 +124,15 @@ class Slam:
         self.omega[rIndex+1, rIndex+3] += motionUpNeg
         
         # Find bot coordinates after move
-        self.heading = truncate_angle(self.heading + float(steering))
+        self.heading = correctAngle(self.heading + float(steering))
         dx = distance * cos(self.heading)
         dy = distance * sin(self.heading)
 
         # Update xi
-        self.xI[rIndex, 0] += -dx / motion_noise
-        self.xI[rIndex+1, 0] += -dy / motion_noise
-        self.xI[rIndex+2, 0] += dx / motion_noise
-        self.xI[rIndex+3, 0] += dy / motion_noise
+        self.xI[rIndex, 0] += -dx / motionNoise
+        self.xI[rIndex+1, 0] += -dy / motionNoise
+        self.xI[rIndex+2, 0] += dx / motionNoise
+        self.xI[rIndex+3, 0] += dy / motionNoise
         
         # Take
         b = np.delete(self.omega, range(2,len(self.omega)), 1)
@@ -228,19 +154,98 @@ class Slam:
         x, y = mu[0][0], mu[1][0]
 
         return x, y
-    
+
+#------------------------------------------------------------------------------
+        
+class State:
+    def __init__(self, areaMap, maxDistance=1.0, maxSteering=pi/2.+0.01, horizonDistance=3):
+        self.reachedLocations = list()
+        self.maxDistance = maxDistance
+        self.maxSteering = maxSteering
+        self.horizonDistance = horizonDistance
+        self.found = list()
+        self.rows = len(areaMap)
+        self.cols = len(areaMap[0])
+        self.landmarks = list()
+        self.startPosition = dict()
+        
+        # Now process the interior of the provided map
+        for i in range(self.rows):
+            for j in range(self.cols):
+                thisSquare = areaMap[i][j]
+                x, y = float(j), -float(i)
+
+                # Process landmarks
+                if thisSquare == 'L':
+                    landmark = dict()
+                    landmark['x'] = x
+                    landmark['y'] = y
+
+                    self.landmarks.append(landmark)
+
+                # Process start
+                if thisSquare == '@':
+                    self.startPosition['x'] = x + 0.5
+                    self.startPosition['y'] = y - 0.5
+
+        # initialize the bot at the start position and at a bearing pointing due east
+        self.bot = Bot(x=self.startPosition['x'], y=self.startPosition['y'], bearing=0.0,
+                                 maxDistance=self.maxDistance, maxSteering=self.maxSteering)
+
+    def createMeasurements(self, noise=noiseFlag):
+        measurements = dict()
+
+        # process landmarks
+        for location in self.landmarks:
+            distance, bearing = self.bot.measureDistanceBearingTo((location['x'], location['y']), noise=noise)
+
+            if distance <= self.horizonDistance:
+                if (location['x'], location['y']) not in self.found:
+                    self.found.append((location['x'], location['y']))
+                measurements[int(hashlib.md5(str(location) + hashSeed).hexdigest(), 16)] = {'distance': distance,
+                                                                                             'bearing': bearing,
+                                                                                             'type': 'beacon'}
+        return measurements,self.found
+
+    def actionUpdate(self, action, noise=noiseFlag):
+        action = action.split()
+        actionType = action[0]
+
+        if actionType == 'move':
+            steering, distance = action[1:]
+            self._attemptMove(float(steering), float(distance), noise=noise)
+        else:
+            raise Exception('improperly formatted action: {}'.format(''.join(action)))
+            
+    def _attemptMove(self, steering, distance, noise=noiseFlag):
+        try:
+            distanceGood = 0.0 <= distance <= self.maxDistance
+            steeringGood = (-self.maxSteering) <= steering <= self.maxSteering
+
+            if noise:
+                steering += random.uniform(-moveNoise, moveNoise)
+                distance *= random.uniform(1.0 - moveNoise, 1.0 + moveNoise)
+
+            if distanceGood and steeringGood:
+                self.bot.move(steering, distance)
+
+        except ValueError:
+            raise Exception('improperly formatted move: {} {}'.format(steering, distance))
+
+#------------------------------------------------------------------------------
+            
 class Bot:
-    def __init__(self, x=0.0, y=0.0, bearing=0.0, max_distance=1.0, max_steering=pi/4):
+    def __init__(self, x=0.0, y=0.0, bearing=0.0, maxDistance=1.0, maxSteering=pi/4):
         self.x = x
         self.y = y
         self.bearing = bearing
-        self.max_distance = max_distance
-        self.max_steering = max_steering
+        self.maxDistance = maxDistance
+        self.maxSteering = maxSteering
 
-    def set_noise(self, steering_noise, distance_noise, measurement_noise):
-        self.steering_noise = float(steering_noise)
-        self.distance_noise = float(distance_noise)
-        self.measurement_noise = float(measurement_noise)
+    def set_noise(self, steeringNoise, distanceNoise, measurementNoise):
+        self.steeringNoise = float(steeringNoise)
+        self.distanceNoise = float(distanceNoise)
+        self.measurementNoise = float(measurementNoise)
 
     # move the bot
     def move(self, steering, distance, noise=False):
@@ -248,34 +253,31 @@ class Bot:
             steering += random.uniform(-0.01, 0.01)
             distance *= random.uniform(0.99, 1.01)
 
-        steering = max(-self.max_steering, steering)
-        steering = min(self.max_steering, steering)
+        steering = max(-self.maxSteering, steering)
+        steering = min(self.maxSteering, steering)
         distance = max(0, distance)
-        distance = min(self.max_distance, distance)
+        distance = min(self.maxDistance, distance)
 
-        self.bearing = truncate_angle(self.bearing + float(steering))
+        self.bearing = correctAngle(self.bearing + float(steering))
         self.x += distance * cos(self.bearing)
         self.y += distance * sin(self.bearing)
 
-    def measure_distance_and_bearing_to(self, point, noise=False):
+    def measureDistanceBearingTo(self, point, noise=False):
+        currentPosition = (self.x, self.y)
 
-        current_position = (self.x, self.y)
-
-        distanceTo = np.linalg.norm(np.array(current_position) - np.array(point))
-        bearingTo = compute_bearing(current_position, point)
+        distanceTo = np.linalg.norm(np.array(currentPosition) - np.array(point))
+        bearingTo = calculateBearing(currentPosition, point)
 
         if noise:
-            distance_sigma = 0.05 * distanceTo
-            bearing_sigma = 0.02 * distanceTo
-
-            distance_noise = random.gauss(0, distance_sigma)
-            bearing_noise = random.gauss(0, bearing_sigma)
+            distanceSigma = 0.05 * distanceTo
+            bearingSigma = 0.02 * distanceTo
+            distanceNoise = random.gauss(0, distanceSigma)
+            bearingNoise = random.gauss(0, bearingSigma)
         else:
-            distance_noise = 0
-            bearing_noise = 0
+            distanceNoise = 0
+            bearingNoise = 0
 
-        measured_distance = distanceTo + distance_noise
-        measured_bearing = truncate_angle(
-            bearingTo - self.bearing + bearing_noise)
+        measuredDistance = distanceTo + distanceNoise
+        measuredBearing = correctAngle(bearingTo - self.bearing + bearingNoise)
 
-        return (measured_distance, measured_bearing)
+        return (measuredDistance, measuredBearing)
