@@ -1,7 +1,8 @@
 name: python_projects
 dependencies:
 - python==2.7
-- matplotlib
+- matplotlib==2.2.3
 - numpy==1.15
-- glob
-- imageio
+- imageio==2.6.1
+- imutils==0.5.3
+- opencv==2.4.13
