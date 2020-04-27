@@ -7,7 +7,7 @@
       * [Online SLAM](#online-slam)
 	  * [A-Star](#a-star)
 	  * [Kalman Filter](#kalman-filter)
-	  * [Colorization Using Optimization] (#colorization-using-optimization)
+	  * [Colorization Using Optimization](#colorization-using-optimization)
 	  
 # Requirements
 
@@ -45,9 +45,9 @@
 
 ## Online SLAM
 
-Online Simultaneous Localization and Mapping (SLAM)
-
-Calculates the location of a bot and landmarks after a series of movements and measurements to landmarks.
+Online Simultaneous Localization and Mapping (SLAM). Calculates the location of a bot and landmarks after a series of 
+bot movements and measurements to landmarks. Results in the mapping of the environment. Online version only maintains 
+the most recent position in bot's path, preventing the omega matrix from becoming too large.
 
 - red triangle - actual bot position and direction
 
@@ -61,7 +61,8 @@ Calculates the location of a bot and landmarks after a series of movements and m
 
 ## A-Star
 
-Calculates the shortest path found between two nodes. Uses an Euchildean distance heuristic.
+An informed search algorithm that calculates the shortest path found between two nodes or graphs. Used an Euchildean 
+distance heuristic.
 
 - green circle - start position
 
@@ -77,8 +78,8 @@ Calculates the shortest path found between two nodes. Uses an Euchildean distanc
 
 ## Kalman Filter
 
-Calculates the position of people in frame. Uses OpenCV Histogram of Gradients (HoG) descriptors as 
-measurements to update the filter.
+An optimal estimation algorithm that predicts states from uncertain measurements. Used to calculate the position 
+of people in frame. Used OpenCV Histogram of Gradients (HoG) descriptors as measurements to update the filter.
 
 - green rectangle - bounding box created from kalman filter state after prediction and measurement update.
 
@@ -86,7 +87,7 @@ measurements to update the filter.
 
 ## Colorization Using Optimization
 
-This process is accomplished with the method introduced in the paper Colorization using Optimization
+Process is accomplished with the method introduced in the paper Colorization using Optimization
 by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in 
 space-time that have similar intensities should have similar colors.
 
