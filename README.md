@@ -7,22 +7,25 @@
       * [Online SLAM](#online-slam)
 	  * [A-Star](#a-star)
 	  * [Kalman Filter](#kalman-filter)
+	  * [Colorization Using Optimization] (#colorization-using-optimization)
 	  
 # Requirements
 
 - Python 2.7
 
-- numpy
+- numpy 1.15
+
+- scipy 1.2.1
 
 - matplotlib
 
-- glob
+- imageio 2.6.1
 
-- imageio
+- imutils 0.5.3
 
-- imutils
+- opencv 2.4.13
 
-- opencv
+- PyQt 5.6
 
 # How to use
 
@@ -54,7 +57,7 @@ Calculates the location of a bot and landmarks after a series of movements and m
 
 - purple dots- SLAM calculated landmark positions
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/onlineSLAM.gif)
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/onlineSLAM.gif)
 
 ## A-Star
 
@@ -70,12 +73,25 @@ Calculates the shortest path found between two nodes. Uses an Euchildean distanc
 
 - red line - shortest path found
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/aStar.gif)
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/aStar.gif)
 
 ## Kalman Filter
 
-Calculates the position of people in frame. Uses OpenCV Histogram of Gradients (HoG) descriptors as measurements to update the filter.
+Calculates the position of people in frame. Uses OpenCV Histogram of Gradients (HoG) descriptors as 
+measurements to update the filter.
 
 - green rectangle - bounding box created from kalman filter state after prediction and measurement update.
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectGifs/kalmanFilter.gif)
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/kalmanFilter.gif)
+
+## Colorization Using Optimization
+
+This process is accomplished with the method introduced in the paper Colorization using Optimization
+by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in 
+space-time that have similar intensities should have similar colors.
+
+The modified PyQt Scribble interface allows a user to import a black and white image, apply color marks, 
+and through colorization using optimization produce a fully colored image. There are options to draw new 
+color marks on an image or import an image pre-colored with marks.
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui.png)
