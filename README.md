@@ -106,6 +106,8 @@ on a single image from top to bottom or left to right. By repeatedly carving out
 seams, defined by an energy map, the aspect ratio of an image can be changed. The selection and order of seams protect 
 the content of the image.
 
+Image Reduction
 ![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.gif)
 
+Image Expansion
 ![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
