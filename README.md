@@ -8,6 +8,7 @@
 	  * [A-Star](#a-star)
 	  * [Kalman Filter](#kalman-filter)
 	  * [Colorization Using Optimization](#colorization-using-optimization)
+	  * [Seam Carving For Content-Aware Image Resizing](#seam-carving-for-content-aware-image-resizing)
 	  
 # Requirements
 
@@ -61,12 +62,12 @@ the most recent position in bot's path, preventing the omega matrix from becomin
 
 ## A-Star
 
-An informed search algorithm that calculates the shortest path found between two nodes or graphs. Used an Euchildean 
+An informed search algorithm that calculates the shortest path found between two nodes or graphs. Used an Euclidean 
 distance heuristic.
 
 - green circle - start position
 
-- magenta star - goal postion
+- magenta star - goal position
 
 - black squares - walls
 
@@ -87,12 +88,24 @@ of people in frame. Used OpenCV Histogram of Gradients (HoG) descriptors as meas
 
 ## Colorization Using Optimization
 
-Process is accomplished with the method introduced in the paper Colorization using Optimization
-by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in 
-space-time that have similar intensities should have similar colors.
+Process is accomplished with the method introduced in the paper [Colorization using Optimization](https://www.cs.huji.ac.il/~yweiss/Colorization/)
+by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in space-time 
+that have similar intensities should have similar colors.
 
 The modified PyQt Scribble interface allows a user to import a black and white image, apply color marks, 
 and through colorization using optimization produce a fully colored image. There are options to draw new 
 color marks on an image or import an image pre-colored with marks.
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui.png)
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui1.png)
+
+## Seam Carving For Content-Aware Image Resizing
+
+Process is accomplished with the method introduced in the paper [Seam Carving for Content-Aware Image Resizing](http://www.faculty.idc.ac.il/arik/SCWeb/imret/index.html) 
+by Shai Avidan and Ariel Shamir. It is based on the premise that a seam is an optimal 8-connected path of pixels 
+on a single image from top to bottom or left to right. By repeatedly carving out or inserting low cost 
+seams, defined by an energy map, the aspect ratio of an image can be changed. The selection and order of seams protect 
+the content of the image.
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.png)
+
+![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.png)
