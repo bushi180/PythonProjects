@@ -58,7 +58,7 @@ the most recent position in bot's path, preventing the omega matrix from becomin
 
 - purple dots- SLAM calculated landmark positions
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/onlineSLAM.gif)
+![Online SLAM](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/onlineSLAM.gif)
 
 ## A-Star
 
@@ -75,7 +75,7 @@ distance heuristic.
 
 - red line - shortest path found
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/aStar.gif)
+![A Star](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/aStar.gif)
 
 ## Kalman Filter
 
@@ -84,7 +84,7 @@ of people in frame. Used OpenCV Histogram of Gradients (HoG) descriptors as meas
 
 - green rectangle - bounding box created from kalman filter state after prediction and measurement update.
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/kalmanFilter.gif)
+![Kalman Filter](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/kalmanFilter.gif)
 
 ## Colorization Using Optimization
 
@@ -96,7 +96,7 @@ The modified PyQt Scribble interface allows a user to import a black and white i
 and through colorization using optimization produce a fully colored image. There are options to draw new 
 color marks on an image or import an image pre-colored with marks.
 
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui1.png)
+![Color Optimization](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui1.png)
 
 ## Seam Carving For Content-Aware Image Resizing
 
@@ -107,7 +107,9 @@ seams, defined by an energy map, the aspect ratio of an image can be changed. Th
 the content of the image.
 
 Image Reduction
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.gif)
+
+![Seam Remove](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.gif)
 
 Image Expansion
-![2](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
+
+![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
