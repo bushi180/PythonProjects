@@ -4,11 +4,11 @@
    * [Requirements](#requirements)
    * [How to use](#how-to-use)
    * [Projects](#projects)
-      * [Online SLAM](#online-slam)
-	  * [A-Star](#a-star)
-	  * [Kalman Filter](#kalman-filter)
 	  * [Colorization Using Optimization](#colorization-using-optimization)
 	  * [Seam Carving For Content-Aware Image Resizing](#seam-carving-for-content-aware-image-resizing)
+	  * [Online SLAM](#online-slam)
+	  * [A-Star](#a-star)
+	  * [Kalman Filter](#kalman-filter)
 	  
 # Requirements
 
@@ -43,6 +43,34 @@
 3. Execute python script in each directory.
 
 # Projects
+
+## Colorization Using Optimization
+
+Process is accomplished with the method introduced in the paper [Colorization using Optimization](https://www.cs.huji.ac.il/~yweiss/Colorization/)
+by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in space-time 
+that have similar intensities should have similar colors.
+
+The modified PyQt Scribble interface allows a user to import a black and white image, apply color marks, 
+and through colorization using optimization produce a fully colored image. There are options to draw new 
+color marks on an image or import an image pre-colored with marks.
+
+![Color Optimization](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui1.png)
+
+## Seam Carving For Content-Aware Image Resizing
+
+Process is accomplished with the method introduced in the paper [Seam Carving for Content-Aware Image Resizing](http://www.faculty.idc.ac.il/arik/SCWeb/imret/index.html) 
+by Shai Avidan and Ariel Shamir. It is based on the premise that a seam is an optimal 8-connected path of pixels 
+on a single image from top to bottom or left to right. By repeatedly carving out or inserting low cost 
+seams, defined by an energy map, the aspect ratio of an image can be changed. The selection and order of seams protect 
+the content of the image.
+
+Image Reduction
+
+![Seam Remove](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.gif)
+
+Image Expansion
+
+![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
 
 ## Online SLAM
 
@@ -85,31 +113,3 @@ of people in frame. Used OpenCV Histogram of Gradients (HoG) descriptors as meas
 - green rectangle - bounding box created from kalman filter state after prediction and measurement update.
 
 ![Kalman Filter](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/kalmanFilter.gif)
-
-## Colorization Using Optimization
-
-Process is accomplished with the method introduced in the paper [Colorization using Optimization](https://www.cs.huji.ac.il/~yweiss/Colorization/)
-by Anat Levin, Dani Lischinski, and Yair Weiss. It is based on the premise that neighboring pixels in space-time 
-that have similar intensities should have similar colors.
-
-The modified PyQt Scribble interface allows a user to import a black and white image, apply color marks, 
-and through colorization using optimization produce a fully colored image. There are options to draw new 
-color marks on an image or import an image pre-colored with marks.
-
-![Color Optimization](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/colorOpGui1.png)
-
-## Seam Carving For Content-Aware Image Resizing
-
-Process is accomplished with the method introduced in the paper [Seam Carving for Content-Aware Image Resizing](http://www.faculty.idc.ac.il/arik/SCWeb/imret/index.html) 
-by Shai Avidan and Ariel Shamir. It is based on the premise that a seam is an optimal 8-connected path of pixels 
-on a single image from top to bottom or left to right. By repeatedly carving out or inserting low cost 
-seams, defined by an energy map, the aspect ratio of an image can be changed. The selection and order of seams protect 
-the content of the image.
-
-Image Reduction
-
-![Seam Remove](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamRemoving.gif)
-
-Image Expansion
-
-![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
