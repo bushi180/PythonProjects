@@ -6,6 +6,7 @@
    * [Projects](#projects)
 	  * [Colorization Using Optimization](#colorization-using-optimization)
 	  * [Seam Carving For Content-Aware Image Resizing](#seam-carving-for-content-aware-image-resizing)
+	  * [Stereo Correspondence](#stereo-correspondence)
 	  * [Online SLAM](#online-slam)
 	  * [A-Star](#a-star)
 	  * [Kalman Filter](#kalman-filter)
@@ -71,6 +72,24 @@ Image Reduction
 Image Expansion
 
 ![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/seamAdding.gif)
+
+## Stereo Correspondence
+
+Used a window based correlation method to determine which pixels in a left stereo image correspond with pixels in a 
+right stereo image. To compare windows I used the sum of squared difference. The disparity map shows the difference in 
+pixel coordinates of similar features in the left and right stereo images.
+
+Rectified stereo images
+
+![Seam Remove](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/mleft_right.jpg)
+
+Left and right disparity (depth) maps.
+
+![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/mDis_left_right)
+
+Occluded areas in black.
+
+![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/motorcycle_occludedD.png)
 
 ## Online SLAM
 
