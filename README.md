@@ -85,7 +85,7 @@ Rectified stereo images
 
 Left and right disparity (depth) maps.
 
-![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/mDis_left_right)
+![Seam Add](https://github.com/bushi180/PythonProjects/blob/master/ProjectImages/mDis_left_right.jpg)
 
 Occluded areas in black.
 
